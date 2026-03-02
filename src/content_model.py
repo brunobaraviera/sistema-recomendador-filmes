@@ -24,4 +24,6 @@ def recommend_movies(title, n = 5):
 
   movie_ids = [i[0] for i in sim_scores]
 
-  return movies["title"].iloc[movie_ids]
+  recs = movies["title"].iloc[movie_ids]
+
+  return recs
