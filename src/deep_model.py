@@ -4,14 +4,6 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from src.data_loader import load_movies, load_ratings
 
-movies = load_movies()
-ratings = load_ratings()
-
-movie_ids = ratings["movieId"].unique()
-
-movie_map = {id: i for i, id in enumerate(movie_ids)}
-reverse_movie_map = {v: k for k, v in movie_map.items()}
-
 class RecommenderNet(nn.Module):
   def __init__(self, num_users, num_movies, embedding_size = 50):
     super().__init__()
@@ -35,19 +27,30 @@ class RecommenderNet(nn.Module):
 
     return x.squeeze()
 
-def load_similarity_matrix():
+def build_deep_model():
+  movies = load_movies()
+  ratings = load_ratings()
+
+  movie_ids = ratings["movieId"].unique()
+
+  movie_map = {id: i for i, id in enumerate(movie_ids)}
+  reverse_movie_map = {v: k for k, v in movie_map.items()}
+
   movie_embeddings = torch.load("models/movie_embeddings.pt")
 
   similarity_matrix = cosine_similarity(movie_embeddings)
 
-  return similarity_matrix
+  return movies, movie_map, reverse_movie_map, similarity_matrix
 
 def recommend_movies_deep(title, n = 5):
+  movies, movie_map, reverse_movie_map, similarity_matrix = build_deep_model()
+  
   movie_id = movies[movies["title"] == title]["movieId"].values[0]
 
-  idx = movie_map[movie_id]
+  if movie_id not in movie_map:
+    raise ValueError("Filme não encontrado no modelo.")
 
-  similarity_matrix = load_similarity_matrix()
+  idx = movie_map[movie_id]
 
   sim_scores = list(enumerate(similarity_matrix[idx]))
   sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse = True)
