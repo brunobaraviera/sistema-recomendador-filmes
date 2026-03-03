@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-#import torch.optim as optim
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from src.data_loader import load_movies, load_ratings
@@ -8,19 +7,10 @@ from src.data_loader import load_movies, load_ratings
 movies = load_movies()
 ratings = load_ratings()
 
-#user_ids = ratings["userId"].unique()
 movie_ids = ratings["movieId"].unique()
 
-#user_map = {id: i for i, id in enumerate(user_ids)}
 movie_map = {id: i for i, id in enumerate(movie_ids)}
 reverse_movie_map = {v: k for k, v in movie_map.items()}
-
-#ratings["user_idx"] = ratings["userId"].map(user_map)
-#ratings["movie_idx"] = ratings["movieId"].map(movie_map)
-
-#user_tensor = torch.tensor(ratings["user_idx"].values)
-#movie_tensor = torch.tensor(ratings["movie_idx"].values)
-#rating_tensor = torch.tensor(ratings["rating"].values, dtype = torch.float32)
 
 class RecommenderNet(nn.Module):
   def __init__(self, num_users, num_movies, embedding_size = 50):
@@ -44,24 +34,6 @@ class RecommenderNet(nn.Module):
     x = self.fc2(x)
 
     return x.squeeze()
-  
-#num_users = len(user_ids)
-#num_movies = len(movie_ids)
-
-#model = RecommenderNet(num_users, num_movies)
-#criterion = nn.MSELoss()
-#optimizer = optim.Adam(model.parameters(), lr = 0.001)
-#epochs = 5
-
-#for epoch in range(epochs):
-#  optimizer.zero_grad()
-#  predictions = model(user_tensor, movie_tensor)
-#  loss = criterion(predictions, rating_tensor)
-#  loss.backward()
-#  optimizer.step()
-#  print(f"Epoch {epoch + 1}, Loss: {loss.item():.4f}")
-
-#movie_embeddings = model.movie_embedding.weight.detach()
 
 def load_similarity_matrix():
   movie_embeddings = torch.load("models/movie_embeddings.pt")
