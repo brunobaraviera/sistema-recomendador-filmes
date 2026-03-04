@@ -61,6 +61,9 @@ recomendação
     ├── models/
     │   └── movie_embeddings.pt
     │
+    ├── notebooks/
+    │   └── eda.ipynb
+    │
     ├── src/
     │   ├── data_loader.py
     │   ├── content_model.py
@@ -69,6 +72,22 @@ recomendação
     │   ├── train_deep_model.py
     │
     └── README.md
+
+---
+
+## 📊 Dataset
+
+Este projeto utiliza o dataset **MovieLens**, amplamente usado em pesquisas e aplicações de sistemas de recomendação.
+
+Uma análise exploratória dos dados (EDA) foi realizada para compreender melhor o comportamento do dataset, incluindo:
+
+- Distribuição das avaliações (ratings)
+- Sparsidade da matriz usuário × filme
+- Distribuição dos gêneros de filmes
+
+A análise exploratória completa pode ser encontrada no notebook:
+
+    notebooks/eda.ipynb
 
 ---
 
