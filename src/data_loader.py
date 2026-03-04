@@ -10,7 +10,3 @@ def load_movies():
 def load_ratings():
   ratings = pd.read_csv(DATA_PATH / "ratings.csv")
   return ratings
-
-def load_tags():
-  tags = pd.read_csv(DATA_PATH / "tags.csv")
-  return tags
